@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio Version 17
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simpleVocalRemover - Standalone Plugin", "simpleVocalRemover_StandalonePlugin.vcxproj", "{3278A34D-3C21-DE39-217B-034AE1085260}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF} = {1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simpleVocalRemover - VST", "simpleVocalRemover_VST.vcxproj", "{130DE775-52FE-EA4A-BD6B-85ACF8D43F6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF} = {1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simpleVocalRemover - VST3", "simpleVocalRemover_VST3.vcxproj", "{6DD4FE06-AE48-050E-7EE5-29594A1D2F89}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF} = {1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}
+		{B60A53EC-F89E-2486-7834-E8471E7B2586} = {B60A53EC-F89E-2486-7834-E8471E7B2586}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simpleVocalRemover - Shared Code", "simpleVocalRemover_SharedCode.vcxproj", "{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simpleVocalRemover - VST3 Manifest Helper", "simpleVocalRemover_VST3ManifestHelper.vcxproj", "{B60A53EC-F89E-2486-7834-E8471E7B2586}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{130DE775-52FE-EA4A-BD6B-85ACF8D43F6C}.Debug|x64.ActiveCfg = Debug|x64
+		{130DE775-52FE-EA4A-BD6B-85ACF8D43F6C}.Debug|x64.Build.0 = Debug|x64
+		{130DE775-52FE-EA4A-BD6B-85ACF8D43F6C}.Release|x64.ActiveCfg = Release|x64
+		{130DE775-52FE-EA4A-BD6B-85ACF8D43F6C}.Release|x64.Build.0 = Release|x64
+		{6DD4FE06-AE48-050E-7EE5-29594A1D2F89}.Debug|x64.ActiveCfg = Debug|x64
+		{6DD4FE06-AE48-050E-7EE5-29594A1D2F89}.Debug|x64.Build.0 = Debug|x64
+		{6DD4FE06-AE48-050E-7EE5-29594A1D2F89}.Release|x64.ActiveCfg = Release|x64
+		{6DD4FE06-AE48-050E-7EE5-29594A1D2F89}.Release|x64.Build.0 = Release|x64
+		{3278A34D-3C21-DE39-217B-034AE1085260}.Debug|x64.ActiveCfg = Debug|x64
+		{3278A34D-3C21-DE39-217B-034AE1085260}.Debug|x64.Build.0 = Debug|x64
+		{3278A34D-3C21-DE39-217B-034AE1085260}.Release|x64.ActiveCfg = Release|x64
+		{3278A34D-3C21-DE39-217B-034AE1085260}.Release|x64.Build.0 = Release|x64
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}.Debug|x64.ActiveCfg = Debug|x64
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}.Debug|x64.Build.0 = Debug|x64
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}.Release|x64.ActiveCfg = Release|x64
+		{1E3F7378-4B7A-0405-588B-11FE0CE7B8FF}.Release|x64.Build.0 = Release|x64
+		{B60A53EC-F89E-2486-7834-E8471E7B2586}.Debug|x64.ActiveCfg = Debug|x64
+		{B60A53EC-F89E-2486-7834-E8471E7B2586}.Debug|x64.Build.0 = Debug|x64
+		{B60A53EC-F89E-2486-7834-E8471E7B2586}.Release|x64.ActiveCfg = Release|x64
+		{B60A53EC-F89E-2486-7834-E8471E7B2586}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
