@@ -95,6 +95,11 @@ void NewProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    processSpec.maximumBlockSize = samplesPerBlock;
+    processSpec.sampleRate = sampleRate;
+    processSpec.numChannels = 2;
+
+    vocalRemoverComponent.vocalRemover.prepare(processSpec);
 }
 
 void NewProjectAudioProcessor::releaseResources()
@@ -144,8 +149,8 @@ void NewProjectAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    vocalRemover.setBypassed(!vocalRemoverComponent.getButtonState());
-    vocalRemover.process(buffer);
+    vocalRemoverComponent.vocalRemover.setBypassed(!vocalRemoverComponent.getButtonState());
+    vocalRemoverComponent.vocalRemover.process(buffer);
 }
 
 //==============================================================================

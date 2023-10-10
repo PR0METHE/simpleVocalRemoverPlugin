@@ -61,8 +61,9 @@ public:
     GuiComponent vocalRemoverComponent;
 private:
     //==============================================================================
-    VocalRemover vocalRemover;
     
+    
+    juce::dsp::ProcessSpec processSpec;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NewProjectAudioProcessor)
 };

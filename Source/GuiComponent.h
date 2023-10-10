@@ -21,6 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
+#include "VocalRemover.h"
 //[/Headers]
 
 
@@ -34,7 +35,8 @@
                                                                     //[/Comments]
 */
 class GuiComponent  : public juce::Component,
-                      public juce::Button::Listener
+                      public juce::Button::Listener,
+                      public juce::Slider::Listener
 {
 public:
     //==============================================================================
@@ -45,11 +47,14 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void toggleButtonState();
     int getButtonState();
+
+    VocalRemover vocalRemover;
     //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
     void resized() override;
     void buttonClicked (juce::Button* buttonThatWasClicked) override;
+    void sliderValueChanged (juce::Slider* sliderThatWasMoved) override;
 
     // Binary resources:
     static const char* switchOff_png;
@@ -61,11 +66,17 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     int buttonValue = 0;
-
+    float highCutFreq = 20000.f;
+    float lowCutFreq = 50.f;
     //[/UserVariables]
 
     //==============================================================================
     std::unique_ptr<juce::ImageButton> powerButton;
+    std::unique_ptr<juce::Label> powerLabel;
+    std::unique_ptr<juce::Slider> hpfSlider;
+    std::unique_ptr<juce::Slider> lpfSlider;
+    std::unique_ptr<juce::Label> lowcutLabel;
+    std::unique_ptr<juce::Label> highcutLabel;
 
 
     //==============================================================================

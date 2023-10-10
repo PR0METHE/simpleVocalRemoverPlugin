@@ -43,6 +43,59 @@ GuiComponent::GuiComponent ()
                             juce::ImageCache::getFromMemory (switchOn_png, switchOn_pngSize), 1.000f, juce::Colour (0x00000000));
     powerButton->setBounds (224, 160, 150, 219);
 
+    powerLabel.reset (new juce::Label ("power label",
+                                       TRANS("On/Off")));
+    addAndMakeVisible (powerLabel.get());
+    powerLabel->setFont (juce::Font (15.00f, juce::Font::plain).withTypefaceStyle ("Regular"));
+    powerLabel->setJustificationType (juce::Justification::centredLeft);
+    powerLabel->setEditable (false, false, false);
+    powerLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    powerLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    powerLabel->setBounds (344, 184, 150, 24);
+
+    hpfSlider.reset (new juce::Slider ("hpfSlider"));
+    addAndMakeVisible (hpfSlider.get());
+    hpfSlider->setRange (50, 10000, 1);
+    hpfSlider->setSliderStyle (juce::Slider::LinearHorizontal);
+    hpfSlider->setTextBoxStyle (juce::Slider::TextBoxLeft, false, 80, 20);
+    hpfSlider->setColour (juce::Slider::thumbColourId, juce::Colours::black);
+    hpfSlider->addListener (this);
+
+    hpfSlider->setBounds (184, 80, 150, 24);
+
+    lpfSlider.reset (new juce::Slider ("lpfSlider"));
+    addAndMakeVisible (lpfSlider.get());
+    lpfSlider->setRange (2000, 20000, 1);
+    lpfSlider->setSliderStyle (juce::Slider::LinearHorizontal);
+    lpfSlider->setTextBoxStyle (juce::Slider::TextBoxLeft, false, 80, 20);
+    lpfSlider->setColour (juce::Slider::thumbColourId, juce::Colours::black);
+    lpfSlider->addListener (this);
+
+    lpfSlider->setBounds (184, 120, 150, 24);
+
+    lowcutLabel.reset (new juce::Label ("lowcut label",
+                                        TRANS("Lowcut Frequency")));
+    addAndMakeVisible (lowcutLabel.get());
+    lowcutLabel->setFont (juce::Font (15.00f, juce::Font::plain).withTypefaceStyle ("Regular"));
+    lowcutLabel->setJustificationType (juce::Justification::centredLeft);
+    lowcutLabel->setEditable (false, false, false);
+    lowcutLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    lowcutLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    lowcutLabel->setBounds (344, 80, 150, 24);
+
+    highcutLabel.reset (new juce::Label ("highcut label",
+                                         TRANS("Highcut Frequency")));
+    addAndMakeVisible (highcutLabel.get());
+    highcutLabel->setFont (juce::Font (15.00f, juce::Font::plain).withTypefaceStyle ("Regular"));
+    highcutLabel->setJustificationType (juce::Justification::centredLeft);
+    highcutLabel->setEditable (false, false, false);
+    highcutLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    highcutLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    highcutLabel->setBounds (344, 120, 150, 24);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -51,6 +104,8 @@ GuiComponent::GuiComponent ()
 
 
     //[Constructor] You can add your own custom stuff here..
+    hpfSlider->setValue(50.f);
+    lpfSlider->setValue(20000.f);
     //[/Constructor]
 }
 
@@ -60,6 +115,11 @@ GuiComponent::~GuiComponent()
     //[/Destructor_pre]
 
     powerButton = nullptr;
+    powerLabel = nullptr;
+    hpfSlider = nullptr;
+    lpfSlider = nullptr;
+    lowcutLabel = nullptr;
+    highcutLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -118,6 +178,53 @@ void GuiComponent::buttonClicked (juce::Button* buttonThatWasClicked)
     //[/UserbuttonClicked_Post]
 }
 
+void GuiComponent::sliderValueChanged (juce::Slider* sliderThatWasMoved)
+{
+    //[UsersliderValueChanged_Pre]
+    //[/UsersliderValueChanged_Pre]
+
+    if (sliderThatWasMoved == hpfSlider.get())
+    {
+        //[UserSliderCode_hpfSlider] -- add your slider handling code here..
+        lowCutFreq = hpfSlider->getValue();
+
+        if (lowCutFreq < highCutFreq)
+            vocalRemover.setLowCutFrequency(lowCutFreq);
+        else
+        {
+            lowCutFreq = lpfSlider->getValue() - 50.f;
+            highCutFreq = lowCutFreq + 50.f;
+            hpfSlider->setValue(lowCutFreq);
+            lpfSlider->setValue(highCutFreq);
+            vocalRemover.setHighCutFrequency(highCutFreq);
+            vocalRemover.setLowCutFrequency(lowCutFreq);
+        }
+
+        //[/UserSliderCode_hpfSlider]
+    }
+    else if (sliderThatWasMoved == lpfSlider.get())
+    {
+        //[UserSliderCode_lpfSlider] -- add your slider handling code here..
+        highCutFreq = lpfSlider->getValue();
+
+        if (highCutFreq > lowCutFreq)
+            vocalRemover.setHighCutFrequency(highCutFreq);
+        else
+        {
+            highCutFreq = hpfSlider->getValue() + 50.f;
+            lowCutFreq = highCutFreq - 50.f;
+            hpfSlider->setValue(lowCutFreq);
+            lpfSlider->setValue(highCutFreq);
+            vocalRemover.setHighCutFrequency(highCutFreq);
+            vocalRemover.setLowCutFrequency(lowCutFreq);
+        }
+        //[/UserSliderCode_lpfSlider]
+    }
+
+    //[UsersliderValueChanged_Post]
+    //[/UsersliderValueChanged_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -153,6 +260,31 @@ BEGIN_JUCER_METADATA
                resourceNormal="switchOff_png" opacityNormal="1.0" colourNormal="0"
                resourceOver="" opacityOver="1.0" colourOver="0" resourceDown="switchOn_png"
                opacityDown="1.0" colourDown="0"/>
+  <LABEL name="power label" id="84121303a68b1141" memberName="powerLabel"
+         virtualName="" explicitFocusOrder="0" pos="344 184 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="On/Off" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15.0"
+         kerning="0.0" bold="0" italic="0" justification="33"/>
+  <SLIDER name="hpfSlider" id="dbadfee90430e48f" memberName="hpfSlider"
+          virtualName="" explicitFocusOrder="0" pos="184 80 150 24" thumbcol="ff000000"
+          min="100.0" max="10000.0" int="1.0" style="LinearHorizontal"
+          textBoxPos="TextBoxLeft" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1.0" needsCallback="1"/>
+  <SLIDER name="lpfSlider" id="888c6c559f4b1fa7" memberName="lpfSlider"
+          virtualName="" explicitFocusOrder="0" pos="184 120 150 24" thumbcol="ff000000"
+          min="2000.0" max="20000.0" int="1.0" style="LinearHorizontal"
+          textBoxPos="TextBoxLeft" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="1.0" needsCallback="1"/>
+  <LABEL name="lowcut label" id="d36f4e07e8ac59e2" memberName="lowcutLabel"
+         virtualName="" explicitFocusOrder="0" pos="344 80 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Lowcut Frequency" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+  <LABEL name="highcut label" id="c13dd389e480e969" memberName="highcutLabel"
+         virtualName="" explicitFocusOrder="0" pos="344 120 150 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Highcut Frequency" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
